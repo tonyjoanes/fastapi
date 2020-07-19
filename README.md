@@ -1,5 +1,7 @@
 # FAST API
 
+[[_TOC_]]
+
 Just trying out fastapi to see how easy it really is to get up and running with and how nice it is to use.
 
 Tutorials and documentation can be found here [https://fastapi.tiangolo.com/](https://fastapi.tiangolo.com/)
@@ -55,3 +57,42 @@ uvicorn main:app --reload
 ```
 
 `main` is the file while `app` is the variable that we assigned `fastAPI()` to
+
+## Docker & Kubernetes
+
+### Docker 
+
+Goto the `src` folder where the `Dockerfile` is located and run the following to build the image
+
+```docker
+docker build -t myfastapi .
+```
+
+`myfastapi` is the image name we will give
+
+Now start the Docker container and test out the API
+
+```
+docker run -d --name myfastapicontainer -p 80:80 myfastapi
+```
+
+### Kubernetes
+
+Hopefully if you followed previous step you will have an image created for your fastapi application.
+Now we want to use that image with kubernetes. I pushed my local image to my dockerhub repository, do this to follow the next step
+
+You can then use the `definition.yml` file in the `/src` folder and run the following
+
+```
+kubectl apply -f definition.yml
+```
+
+Now run the following command and you should see we have 3 pods running our fastapi!!!
+
+```
+kubectl get pods
+```
+
+You should now see this
+
+![pods](pods.JPG)
