@@ -9,6 +9,7 @@ class Item(BaseModel):
     name: str
     price: float
     is_offer: Optional[bool] = None
+    tax: Optional[float] = None
 
 @app.get("/")
 def read_root():
@@ -17,6 +18,14 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
+
+@app.post('/items/')
+async def create_item(item: Item):
+    item_dict = item.dict()
+    if item.tax:
+        price_with_tax = item.price + item.tax
+        item_dict.update({"Price_with_tax": price_with_tax})
+    return item_dict
 
 @app.put("/items/{item_id}")
 def update_item(item_id: int, item: Item):
